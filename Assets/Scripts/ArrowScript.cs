@@ -17,29 +17,26 @@ public class ArrowScript : MonoBehaviour , IBeginDragHandler, IDragHandler, IEnd
    
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("Begin Drag");
         arrowObject = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
 
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("Drag");
     }
 
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log("Drop");
     }
 
 
-    private bool checkEndDrop = false;
-    public bool CheckEndDrop { get; set; }
+    private bool isDropped = false;
+    public bool IsDropped { get; set; }
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("End Drop");
         Destroy(arrowObject);
-        CheckEndDrop = true;
+        IsDropped = true;
+
     }
 
     private void Awake()
@@ -54,7 +51,7 @@ public class ArrowScript : MonoBehaviour , IBeginDragHandler, IDragHandler, IEnd
             Vector2 len = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
             float z = Mathf.Atan2(len.y, len.x) * Mathf.Rad2Deg;
             arrowObject.transform.rotation = Quaternion.Euler(0, 0, 180+z);
-            Debug.Log(Vector2.SqrMagnitude(len));
+
         }
        
     }

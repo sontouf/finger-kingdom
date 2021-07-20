@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EggManager : MonoBehaviour
 {
     // ===================== [ constant fields ] =========================
@@ -15,63 +16,77 @@ public class EggManager : MonoBehaviour
         // 객체 생성
         GameObject newEggObject =
             Instantiate(circlePrefab, position, Quaternion.identity);
+ 
         // 컴포넌트들 추가
-        newEggObject.AddComponent<EggClicker>();
-        newEggObject.AddComponent<ArrowScript>();
+        ArrowScript newArrowScript = newEggObject.AddComponent<ArrowScript>();
         EggManager newEggManager = newEggObject.AddComponent<EggManager>();
+        newEggManager.arrowScript = newArrowScript;
 
         // static 리스트에 추가
         eggManagers.Add(newEggManager);
-
     }
+
+ 
 
     static public void DestroyEgg(EggManager eggManager)
     {
         eggManagers.Remove(eggManager);
-
         Destroy(eggManager.gameObject);
+
     }
 
     // ===================== [ static private fields ] ===================
     [SerializeField]
     static private GameObject circlePrefab;
-
+ 
     // ====================== [ private fields ] ==========================
 
     [SerializeField]
-    private float maxSpeed;
+
+    private Vector2 targetPosition;
+
+    private ArrowScript arrowScript;
 
     [SerializeField]
-    private float aclrt;
-    
-    
-    private float curr_speed;
-    private Vector2 dir;
-    public void EggMove()
-    {
-        if(this.gameObject.GetComponent<ArrowScript>().CheckEndDrop == true)
-        {
-            Vector2 len = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            float z = Mathf.Atan2(len.y, len.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, 180 + z);
-            curr_speed = Mathf.Clamp(curr_speed += aclrt*Time.deltaTime, 0f, maxSpeed);
-        }
-    }
-
-
-    private bool isSelected = false;
-    public bool IsSelected { get; set; }
+    private Vector2 force = new Vector2(0, 0);
+    private float speed = 50;
+    private Vector2 mousePos = new Vector2(0,0);
+    Camera Camera;
+    private bool holding = false;
+    private float range;
 
     private void Awake()
     {
         circlePrefab = Resources.Load(circlePrefabPath) as GameObject;
+        Camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        range = GetComponent<CircleCollider2D>().radius;
     }
+
 
     private void Update()
     {
-        EggMove();
-        transform.Translate(dir * curr_speed * Time.deltaTime, Space.World);
+        mousePos = Input.mousePosition;
+        mousePos = Camera.ScreenToWorldPoint(mousePos);
+        if (Input.GetMouseButtonDown(0) && Vector2.Distance(mousePos, transform.position) <= range)
+        {
+            holding = true;
+        }
+        if (Input.GetMouseButton(0) && GetComponent<ArrowScript>().IsDropped)
+        {
+            force = (Vector2)transform.position - mousePos;
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            GetComponent<Rigidbody2D>().AddForce(force * speed);
+            force = new Vector2(0, 0);
+            holding = false;
+        }
+
+
     }
+
+    // ================= [ Instance Methods ] =================== 
+ 
 
 
 }
