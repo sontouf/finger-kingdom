@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour
         foreach (Vector3 pos in positions)
         {
             EggManager.CreateEgg(pos);
-            
         }
 
 

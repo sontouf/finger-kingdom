@@ -20,7 +20,7 @@ public class EggManager : MonoBehaviour
         // 객체 생성
         GameObject newEggObject =
             Instantiate(circlePrefab, position, Quaternion.identity);
- 
+        
         // 컴포넌트들 추가
         EggManager newEggManager = newEggObject.AddComponent<EggManager>();
 
@@ -29,7 +29,6 @@ public class EggManager : MonoBehaviour
         eggManagers.Add(newEggManager);
     }
 
- 
 
     static public void DestroyEgg(EggManager eggManager)
     {
@@ -42,42 +41,51 @@ public class EggManager : MonoBehaviour
     [SerializeField]
     static private GameObject circlePrefab;
 
+    static Camera camera;
     // ====================== [ private fields ] ==========================
 
-    [SerializeField]
+    private GameObject canvasObject;
 
-    private Vector2 targetPosition;
 
     [SerializeField]
     private Vector2 force = new Vector2(0, 0);
     private float speed = 50;
     private Vector2 mousePos;
-    Camera Camera;
+ 
     private bool holding = false;
     private float range;
 
 
     [SerializeField]
-    private float hp = 100;
+    private float maxHp = 100;
+    private float curHp;
     private float damage = 10;
-
-
+    public HpBarController hpBarController;
 
     private void Awake()
     {
         circlePrefab = Resources.Load(circlePrefabPath) as GameObject;
-        Camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        range = GetComponent<CircleCollider2D>().radius;
+
     }
 
+    private void Start()
+    {
+
+        camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        range = this.gameObject.GetComponent<CircleCollider2D>().radius;
+        canvasObject = this.gameObject.transform.GetChild(0).gameObject;
+        hpBarController = this.gameObject.AddComponent<HpBarController>();
 
 
-
+        curHp = maxHp;
+        hpBarController.hpBar = this.gameObject.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Slider>();
+        hpBarController.SetHealth(curHp, maxHp);
+    }
 
     private void Update()
     {
         mousePos = Input.mousePosition;
-        mousePos = Camera.ScreenToWorldPoint(mousePos);
+        mousePos = camera.ScreenToWorldPoint(mousePos);
         if (transform.position.x > 6 || transform.position.x < -6 || transform.position.y > 4 || transform.position.y < -4)
         {
             
