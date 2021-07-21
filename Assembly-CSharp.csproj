@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Assets\Enemy.cs" />
     <Compile Include="Assets\Player.cs" />
+    <Compile Include="Assets\Turn.cs" />
     <Reference Include="UnityEngine.Purchasing">
       <HintPath>C:/Users/dksgy/Project Finger Kingdom/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
