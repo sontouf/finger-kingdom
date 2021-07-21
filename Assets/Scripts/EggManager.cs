@@ -15,7 +15,7 @@ public class EggManager : MonoBehaviour
     // ====================== [ static eggManagers ] ==========================
     static private List<EggManager> eggManagers = new List<EggManager>();
 
-    static public void CreateEgg(Vector3 position)
+    static public void CreateEgg(Vector3 position, string tagName)
     {
         // 객체 생성
         GameObject newEggObject =
@@ -27,9 +27,9 @@ public class EggManager : MonoBehaviour
         InitEgg(newEggObject, newEggManager);
 
         newEggObject.AddComponent<EggMoveController>().eggManager = newEggManager;
-
         // static 리스트에 추가
         eggManagers.Add(newEggManager);
+        newEggObject.tag = tagName;
     }
 
     static public void InitEgg(GameObject newEggObject, EggManager newEggManager)
@@ -58,7 +58,7 @@ public class EggManager : MonoBehaviour
 
     private GameObject canvasObject;
     new private Transform transform;
-    private GameObject eggObject;
+    public GameObject eggObject;
 
     private Vector2 force = new Vector2(0, 0);
     private float speed = 50;
@@ -68,9 +68,12 @@ public class EggManager : MonoBehaviour
     private float range;
 
     private float maxHp = 100;
-    private float curHp;
-    private float damage = 10;
+    public float curHp;
+    public float CurHp { get; set; }
     private HpBarController hpBarController;
+
+    public float damage = 10;
+    public float Damage { get; set; }
 
     private void Awake()
     {
@@ -101,6 +104,21 @@ public class EggManager : MonoBehaviour
                 force = new Vector2(0, 0);
                 holding = false;
             }
+      
+        }
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("collider O1n");
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            CurHp -= Damage;
+            Debug.Log("collider On");
         }
     }
 }
+
+
+

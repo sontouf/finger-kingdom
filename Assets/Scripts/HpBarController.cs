@@ -13,12 +13,11 @@ public class HpBarController : MonoBehaviour
     public Color high = Color.green;
     public Vector3 offset;
 
-
+    public EggManager eggManager;
     private void Start()
     {
         
     }
-
 
     // Update is called once per frame
     void Update()
@@ -26,14 +25,15 @@ public class HpBarController : MonoBehaviour
         hpBar.transform.position = Camera.main.WorldToScreenPoint(transform.position + offset);
     }
 
- 
+
+
+
     public void SetHealth(float curHp, float maxHp)
     {
 
         hpBar.gameObject.SetActive(curHp <= maxHp);
         hpBar.maxValue = maxHp;
         hpBar.value = curHp;
-        Debug.Log(hpBar.value);
 
 
         hpBar.fillRect.GetComponentInChildren<Image>().color
