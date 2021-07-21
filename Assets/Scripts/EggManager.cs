@@ -132,7 +132,7 @@ public class EggManager : MonoBehaviour
     // HpBarControl 관련 정보를 발생시키고 객체 소멸에 도움을 준다.
     // tag정보를 통해 HpBar 관련 정보를 제공하고 있다.
     // Turn 정보제공 메소드를 완성한다면 Turn 정보를 제공하여 충돌이 일어났을때의 추가적인 정보를 제공필요.
-    private void OnCollisionExit2D(Collision2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
         GameObject otherObject = other.gameObject;
         EggManager otherEggManager = otherObject.GetComponent<EggManager>();
@@ -145,6 +145,15 @@ public class EggManager : MonoBehaviour
             }
             otherObject.GetComponent<HpBarController>()
                         .SetHealth(otherEggManager.curHp, otherEggManager.maxHp);
+        }
+    }
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        GameObject otherObject = other.gameObject;
+        EggManager otherEggManager = otherObject.GetComponent<EggManager>();
+
+        if (otherObject.tag == "Enemy")
+        {
             if (otherEggManager.curHp <= 0)
             {
                 DestroyEgg(otherEggManager);
