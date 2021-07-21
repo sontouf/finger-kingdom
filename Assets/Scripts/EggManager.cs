@@ -20,34 +20,46 @@ public class EggManager : MonoBehaviour
         // 객체 생성
         GameObject newEggObject =
             Instantiate(circlePrefab, position, Quaternion.identity);
-        
-        // 컴포넌트들 추가
-        EggManager newEggManager = newEggObject.AddComponent<EggManager>();
 
+
+        // 컴포넌트들 추가
+        EggManager newEggManager = new EggManager();
+        InitEgg(newEggObject, newEggManager);
+
+        newEggObject.AddComponent<EggMoveController>().eggManager = newEggManager;
 
         // static 리스트에 추가
         eggManagers.Add(newEggManager);
     }
 
+    static public void InitEgg(GameObject newEggObject, EggManager newEggManager)
+    {
+        newEggManager.range = newEggObject.GetComponent<CircleCollider2D>().radius;
+        newEggManager.canvasObject = newEggObject.gameObject.transform.GetChild(0).gameObject;
+        newEggManager.eggObject = newEggObject;
+        newEggManager.transform = newEggObject.GetComponent<Transform>();
+        newEggManager.hpBarController = newEggObject.AddComponent<HpBarController>();
+        newEggManager.curHp = newEggManager.maxHp;
+        newEggManager.hpBarController.hpBar = newEggObject.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Slider>();
+        newEggManager.hpBarController.SetHealth(newEggManager.curHp, newEggManager.maxHp);
+    }
 
     static public void DestroyEgg(EggManager eggManager)
     {
         eggManagers.Remove(eggManager);
-        Destroy(eggManager.gameObject);
-
+        Destroy(eggManager.eggObject);
     }
 
     // ===================== [ static private fields ] ===================
     [SerializeField]
     static private GameObject circlePrefab;
 
-    static Camera camera;
     // ====================== [ private fields ] ==========================
 
     private GameObject canvasObject;
+    new private Transform transform;
+    private GameObject eggObject;
 
-
-    [SerializeField]
     private Vector2 force = new Vector2(0, 0);
     private float speed = 50;
     private Vector2 mousePos;
@@ -55,41 +67,23 @@ public class EggManager : MonoBehaviour
     private bool holding = false;
     private float range;
 
-
-    [SerializeField]
     private float maxHp = 100;
     private float curHp;
     private float damage = 10;
-    public HpBarController hpBarController;
+    private HpBarController hpBarController;
 
     private void Awake()
     {
         circlePrefab = Resources.Load(circlePrefabPath) as GameObject;
-
     }
 
-    private void Start()
+    public void MoveEgg(Camera camera, Transform transform, EggManager eggManager)
     {
-
-        camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        range = this.gameObject.GetComponent<CircleCollider2D>().radius;
-        canvasObject = this.gameObject.transform.GetChild(0).gameObject;
-        hpBarController = this.gameObject.AddComponent<HpBarController>();
-
-
-        curHp = maxHp;
-        hpBarController.hpBar = this.gameObject.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Slider>();
-        hpBarController.SetHealth(curHp, maxHp);
-    }
-
-    private void Update()
-    {
-        mousePos = Input.mousePosition;
-        mousePos = camera.ScreenToWorldPoint(mousePos);
+        mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
         if (transform.position.x > 6 || transform.position.x < -6 || transform.position.y > 4 || transform.position.y < -4)
         {
-            
-            DestroyEgg(this.GetComponent<EggManager>());
+
+            DestroyEgg(eggManager);
         }
         else
         {
@@ -103,15 +97,10 @@ public class EggManager : MonoBehaviour
             }
             if (Input.GetMouseButtonUp(0))
             {
-                GetComponent<Rigidbody2D>().AddForce(force * speed);
+                transform.GetComponent<Rigidbody2D>().AddForce(force * speed);
                 force = new Vector2(0, 0);
                 holding = false;
             }
         }
-
     }
-
-    // ================= [ Instance Methods ] =================== 
-
-
 }

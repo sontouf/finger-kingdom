@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject planePrefeb;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,7 +38,7 @@ public class GameManager : MonoBehaviour
             EggManager.CreateEgg(pos);
         }
 
-
+        Temp.AddTemp(new Vector3(5, -3, 0));
     }
 
 

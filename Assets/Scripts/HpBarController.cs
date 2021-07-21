@@ -30,9 +30,11 @@ public class HpBarController : MonoBehaviour
     public void SetHealth(float curHp, float maxHp)
     {
 
-        hpBar.gameObject.SetActive(curHp < maxHp);
-        hpBar.value = curHp;
+        hpBar.gameObject.SetActive(curHp <= maxHp);
         hpBar.maxValue = maxHp;
+        hpBar.value = curHp;
+        Debug.Log(hpBar.value);
+
 
         hpBar.fillRect.GetComponentInChildren<Image>().color
             = Color.Lerp(low, high, hpBar.normalizedValue);
