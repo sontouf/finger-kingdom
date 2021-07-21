@@ -10,8 +10,6 @@ public class EggManager : MonoBehaviour
     // ===================== [ constant fields ] =========================
     const string circlePrefabPath = "Prefabs/CirclePrefab";
 
-
-
     // ====================== [ static eggManagers ] ==========================
     static private List<EggManager> eggManagers = new List<EggManager>();
 
@@ -21,44 +19,27 @@ public class EggManager : MonoBehaviour
         GameObject newEggObject =
             Instantiate(circlePrefab, position, Quaternion.identity);
 
-
+        EggManager newEggManager = newEggObject.AddComponent<EggManager>();
         // 컴포넌트들 추가
-        EggManager newEggManager = new EggManager();
-        InitEgg(newEggObject, newEggManager);
 
-        newEggObject.AddComponent<EggMoveController>().eggManager = newEggManager;
         // static 리스트에 추가
         eggManagers.Add(newEggManager);
         newEggObject.tag = tagName;
     }
 
-    static public void InitEgg(GameObject newEggObject, EggManager newEggManager)
-    {
-        newEggManager.range = newEggObject.GetComponent<CircleCollider2D>().radius;
-        newEggManager.canvasObject = newEggObject.gameObject.transform.GetChild(0).gameObject;
-        newEggManager.eggObject = newEggObject;
-        newEggManager.transform = newEggObject.GetComponent<Transform>();
-        newEggManager.hpBarController = newEggObject.AddComponent<HpBarController>();
-        newEggManager.curHp = newEggManager.maxHp;
-        newEggManager.hpBarController.hpBar = newEggObject.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Slider>();
-        newEggManager.hpBarController.SetHealth(newEggManager.curHp, newEggManager.maxHp);
-    }
+
 
     static public void DestroyEgg(EggManager eggManager)
     {
         eggManagers.Remove(eggManager);
-        Destroy(eggManager.eggObject);
+        Destroy(eggManager.gameObject);
     }
 
     // ===================== [ static private fields ] ===================
     [SerializeField]
-    static private GameObject circlePrefab;
+    static private GameObject circlePrefab = Resources.Load(circlePrefabPath) as GameObject;
 
     // ====================== [ private fields ] ==========================
-
-    private GameObject canvasObject;
-    new private Transform transform;
-    public GameObject eggObject;
 
     private Vector2 force = new Vector2(0, 0);
     private float speed = 50;
@@ -69,24 +50,36 @@ public class EggManager : MonoBehaviour
 
     private float maxHp = 100;
     public float curHp;
-    public float CurHp { get; set; }
+ 
     private HpBarController hpBarController;
 
     public float damage = 10;
-    public float Damage { get; set; }
 
-    private void Awake()
+    public Camera mainCamera;
+ 
+    private void Start()
     {
-        circlePrefab = Resources.Load(circlePrefabPath) as GameObject;
+        mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+
+        range = gameObject.GetComponent<CircleCollider2D>().radius;
+        curHp = maxHp;
+        hpBarController = gameObject.AddComponent<HpBarController>();
+        hpBarController.Init(curHp, maxHp);
+    }
+    private void Update()
+    {
+        MoveEgg();
     }
 
-    public void MoveEgg(Camera camera, Transform transform, EggManager eggManager)
+
+
+
+    public void MoveEgg()
     {
-        mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
+        mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         if (transform.position.x > 6 || transform.position.x < -6 || transform.position.y > 4 || transform.position.y < -4)
         {
-
-            DestroyEgg(eggManager);
+            DestroyEgg(this);
         }
         else
         {
@@ -109,13 +102,20 @@ public class EggManager : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionExit2D(Collision2D other)
     {
-        Debug.Log("collider O1n");
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.tag == "Enemy")
         {
-            CurHp -= Damage;
-            Debug.Log("collider On");
+            if (this.gameObject.tag == "Player")
+            {
+                other.gameObject.GetComponent<EggManager>().curHp -= this.gameObject.GetComponent<EggManager>().damage;
+            }
+            other.gameObject.GetComponent<HpBarController>().SetHealth(other.gameObject.GetComponent<EggManager>().curHp, other.gameObject.GetComponent<EggManager>().maxHp);
+            if (other.gameObject.GetComponent<EggManager>().curHp <= 0)
+            {
+                DestroyEgg(other.gameObject.GetComponent<EggManager>());
+            }
+
         }
     }
 }
