@@ -14,8 +14,10 @@ public class EggManager : MonoBehaviour
     // ====================== [ static eggManagers ] ==========================
     static private List<EggManager> eggManagers = new List<EggManager>();
 
+
     static public void CreateEgg<EggType>(Vector3 position, string tagName) where EggType : EggManager
     {
+        circlePrefab = Resources.Load(circlePrefabPath) as GameObject;
         // 객체 생성
         GameObject newEggObject =
             Instantiate(circlePrefab, position, Quaternion.identity);
@@ -37,8 +39,7 @@ public class EggManager : MonoBehaviour
     }
 
     // ===================== [ static private fields ] ===================
-    [SerializeField]
-    static private GameObject circlePrefab = Resources.Load(circlePrefabPath) as GameObject;
+    static private GameObject circlePrefab;
 
     // ====================== [ private fields ] ==========================
     public SpriteRenderer spriteRenderer;
