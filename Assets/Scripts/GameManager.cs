@@ -44,13 +44,13 @@ public class GameManager : MonoBehaviour
 
         foreach (Vector3 pos in EnemyEggPositions)
         {
-            EggManager.CreateEgg(pos, enemyEggTagName);
+            EggManager.CreateEgg<Warrior>(pos, enemyEggTagName);
         }
 
 
         foreach (Vector3 pos in UserEggPositions)
         {
-            EggManager.CreateEgg(pos, userEggTagName);
+            EggManager.CreateEgg<Warrior>(pos, userEggTagName);
         }
 
 

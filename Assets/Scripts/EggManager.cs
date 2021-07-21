@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 
 
@@ -13,13 +14,13 @@ public class EggManager : MonoBehaviour
     // ====================== [ static eggManagers ] ==========================
     static private List<EggManager> eggManagers = new List<EggManager>();
 
-    static public void CreateEgg(Vector3 position, string tagName)
+    static public void CreateEgg<EggType>(Vector3 position, string tagName) where EggType : EggManager
     {
         // 객체 생성
         GameObject newEggObject =
             Instantiate(circlePrefab, position, Quaternion.identity);
 
-        EggManager newEggManager = newEggObject.AddComponent<EggManager>();
+        EggType newEggManager = newEggObject.AddComponent<EggType>();
         // 컴포넌트들 추가
 
         // static 리스트에 추가
@@ -40,6 +41,7 @@ public class EggManager : MonoBehaviour
     static private GameObject circlePrefab = Resources.Load(circlePrefabPath) as GameObject;
 
     // ====================== [ private fields ] ==========================
+    public SpriteRenderer spriteRenderer;
 
     private Vector2 force = new Vector2(0, 0);
     private float speed = 50;
@@ -57,16 +59,17 @@ public class EggManager : MonoBehaviour
 
     public Camera mainCamera;
  
-    private void Start()
+    protected virtual void Start()
     {
         mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
-
         range = gameObject.GetComponent<CircleCollider2D>().radius;
         curHp = maxHp;
         hpBarController = gameObject.AddComponent<HpBarController>();
         hpBarController.Init(curHp, maxHp);
+
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
-    private void Update()
+    protected virtual void Update()
     {
         MoveEgg();
     }
@@ -104,16 +107,20 @@ public class EggManager : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.tag == "Enemy")
+        GameObject otherObject = other.gameObject;
+        EggManager otherEggManager = otherObject.GetComponent<EggManager>();
+
+        if (otherObject.tag == "Enemy")
         {
             if (this.gameObject.tag == "Player")
             {
-                other.gameObject.GetComponent<EggManager>().curHp -= this.gameObject.GetComponent<EggManager>().damage;
+                otherEggManager.curHp -= damage;
             }
-            other.gameObject.GetComponent<HpBarController>().SetHealth(other.gameObject.GetComponent<EggManager>().curHp, other.gameObject.GetComponent<EggManager>().maxHp);
-            if (other.gameObject.GetComponent<EggManager>().curHp <= 0)
+            otherObject.GetComponent<HpBarController>()
+                        .SetHealth(otherEggManager.curHp, otherEggManager.maxHp);
+            if (otherEggManager.curHp <= 0)
             {
-                DestroyEgg(other.gameObject.GetComponent<EggManager>());
+                DestroyEgg(otherEggManager);
             }
 
         }
