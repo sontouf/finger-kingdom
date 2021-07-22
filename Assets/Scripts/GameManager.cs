@@ -47,11 +47,18 @@ public class GameManager : MonoBehaviour
     private string userEggTagName = "Player";
     private string worriorTagName = "Warrior";
     private string archerTagName = "Archer";
+    private string cavalryTagName = "Cavalry";
+    private string healerTagName = "Healer";
+
+
 
     // =================== enemyUnit tagName ====================
     private string enemyEggTagName = "Enemy";
     private string goblinTagName = "Goblin";
- 
+    private string ogreTagName = "Ogre";
+    private string skeletonTagName = "Skeleton";
+
+
     // Start is called before the first frame update
     void Start()
     {

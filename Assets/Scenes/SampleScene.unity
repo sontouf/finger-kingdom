@@ -254,8 +254,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 964268391c4356a498c4caac5995460d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planePrefeb: {fileID: 5531581934603198444, guid: 15781211741a2544092c9cc0cd6bfcf2,
-    type: 3}
 --- !u!1 &2130539372
 GameObject:
   m_ObjectHideFlags: 0

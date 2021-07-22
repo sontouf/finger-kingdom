@@ -104,7 +104,7 @@ public class EggManager : MonoBehaviour
         // World 세상 기준 위치를 마우스 위치로 받아온다.
         mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         // 게임판을 벗어나면 egg 소멸 << 낙사 >>
-        if (transform.position.x > 6 || transform.position.x < -6 || transform.position.y > 4 || transform.position.y < -4)
+        if (transform.position.x > 6.15|| transform.position.x < -6.15 || transform.position.y > 3.7 || transform.position.y < -3.7)
         {
             DestroyEgg(this);
         }
@@ -151,15 +151,11 @@ public class EggManager : MonoBehaviour
     {
         GameObject otherObject = other.gameObject;
         EggManager otherEggManager = otherObject.GetComponent<EggManager>();
-
-        if (otherObject.tag == "Enemy")
+        if (otherEggManager.curHp <= 0)
         {
-            if (otherEggManager.curHp <= 0)
-            {
-                DestroyEgg(otherEggManager);
-            }
-
+             DestroyEgg(otherEggManager);
         }
+
     }
 }
 
