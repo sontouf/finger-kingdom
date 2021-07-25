@@ -22,6 +22,7 @@ public class WarriorEgg : EggManager  // warrior는 eggmanager의 정보를 상�
     protected override void Update()
     {
         base.Update();
+
     }
 }
 

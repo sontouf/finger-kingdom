@@ -57,7 +57,7 @@ public class EggManager : MonoBehaviour
 
     // egg의 이동 관련 변수
     private Vector2 force = new Vector2(0, 0);
-    public float speed = 50;
+    public float speed = 100;
     public float mass;
 
     private Vector2 mousePos;
@@ -72,10 +72,10 @@ public class EggManager : MonoBehaviour
     public float damage = 10;
 
 
+
+
     // egg의 그 외 기타 정보
 
-
- 
     // protected virtual을 추가해줘서 상속.
     // Egg의 메소드 관련 초기화.
     protected virtual void Start()
@@ -89,10 +89,24 @@ public class EggManager : MonoBehaviour
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
+    private bool isUserTurn = true;
+
+    public void Turn()
+    {
+        
+    }
+
     // protected virtual을 추가해줘서 상속.
     protected virtual void Update()
     {
-        MoveEgg();
+        if (isUserTurn)
+        {
+            MoveEgg();
+            if (curHp <= 0)
+            {
+                DestroyEgg(this);
+            }
+        }
     }
 
 
@@ -137,7 +151,13 @@ public class EggManager : MonoBehaviour
         GameObject otherObject = other.gameObject;
         EggManager otherEggManager = otherObject.GetComponent<EggManager>();
 
-        if (otherObject.tag == "Enemy")
+
+
+        if (otherObject.CompareTag("Trap"))
+        {
+            DestroyEgg(this);
+        }
+        else if (otherObject.CompareTag("Enemy"))
         {
             if (this.gameObject.tag == "Player")
             {
@@ -147,16 +167,7 @@ public class EggManager : MonoBehaviour
                         .SetHealth(otherEggManager.curHp, otherEggManager.maxHp);
         }
     }
-    private void OnCollisionExit2D(Collision2D other)
-    {
-        GameObject otherObject = other.gameObject;
-        EggManager otherEggManager = otherObject.GetComponent<EggManager>();
-        if (otherEggManager.curHp <= 0)
-        {
-             DestroyEgg(otherEggManager);
-        }
 
-    }
 }
 
 

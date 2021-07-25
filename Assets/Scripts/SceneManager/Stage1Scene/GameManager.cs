@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
 
 
     const string planePrefabPath = "Prefabs/PlanePrefab";
+    const string hurdlePrefabPath = "Prefabs/HurdlePrefab";
+    const string trapPrefabPath = "Prefabs/TrapPrefab";
+
     // stage가 시작하면 각 unit의 갯수를 받아와서 객체를 생성해야한다.
     // 일단은 default로 warrior로 생성한다.
 
@@ -41,9 +44,11 @@ public class GameManager : MonoBehaviour
 
     // ======================= private field ====================
     private GameObject planePrefeb;
+    private GameObject hurdlePrefeb;
+    private GameObject trapPrefeb;
+    public GameObject menuSet;
 
-
-     // =================== userUnit tagName ====================
+    // =================== userUnit tagName ====================
     private string userEggTagName = "Player";
     private string worriorTagName = "Warrior";
     private string archerTagName = "Archer";
@@ -63,8 +68,14 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         planePrefeb = Resources.Load(planePrefabPath) as GameObject;
+        hurdlePrefeb = Resources.Load(hurdlePrefabPath) as GameObject;
+        trapPrefeb = Resources.Load(trapPrefabPath) as GameObject;
+
         // 게임판 객체생성하기. 나중에 sprite로 그림 받아오자
         Instantiate(planePrefeb, Vector3.zero, Quaternion.identity);
+        Instantiate(hurdlePrefeb, new Vector3((float)-2.5, 1, 0), Quaternion.identity);
+        Instantiate(trapPrefeb, new Vector3(2, -2, 0), Quaternion.identity);
+
 
         // user unit 위치 받아오기.
         UserEggSpawnPositions.Add(p1);
@@ -90,7 +101,27 @@ public class GameManager : MonoBehaviour
 
 
     }
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetButtonDown("Cancel"))
+        {
+            if (menuSet.activeSelf)
+                menuSet.SetActive(false);
+            else
+                menuSet.SetActive(true);
+        }
 
+    }
+    public void ExitGame()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void ReStartGame()
+    {
+        SceneManager.LoadScene(4);
+    }
 
 
 
