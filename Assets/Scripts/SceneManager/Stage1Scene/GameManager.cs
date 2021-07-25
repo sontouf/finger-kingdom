@@ -41,12 +41,20 @@ public class GameManager : MonoBehaviour
     private List<Vector3> EnemyEggSpawnPositions = new List<Vector3>();
 
 
+    // ================== static field ===============
+    static public bool isUserTurn = true;
+    static public int userUnitCount = 0;
+    static public int enemyUnitCount = 0;
+
 
     // ======================= private field ====================
     private GameObject planePrefeb;
     private GameObject hurdlePrefeb;
     private GameObject trapPrefeb;
-    public GameObject menuSet;
+    public GameObject menuSet; // esc 눌렀을때 나타날 메뉴
+    public GameObject victoryMenuSet; // stage 클리어시 나타날 메뉴
+    public GameObject defeatMenuSet; // stage 패배시 나타날 메뉴
+
 
     // =================== userUnit tagName ====================
     private string userEggTagName = "Player";
@@ -91,16 +99,17 @@ public class GameManager : MonoBehaviour
         // 위치랑 tag 이름 받아와서 egg 객체 생성, 자세한 내용은 eggmanager 참고.
         foreach (Vector3 pos in EnemyEggSpawnPositions)
         {
-            EggManager.CreateEgg<WarriorEgg>(pos, enemyEggTagName);
+            EggManager.CreateEgg<GoblinEgg>(pos, enemyEggTagName);
+            userUnitCount += 1;
         }
         foreach (Vector3 pos in UserEggSpawnPositions)
         {
             EggManager.CreateEgg<WarriorEgg>(pos, userEggTagName);
+            enemyUnitCount += 1;
         }
-
-
-
     }
+
+
     // Update is called once per frame
     void Update()
     {
@@ -111,18 +120,43 @@ public class GameManager : MonoBehaviour
             else
                 menuSet.SetActive(true);
         }
+        if (isUserTurn)
+        {
+            Debug.Log("player turn");
+        }
+        else
+            Debug.Log("enemy turn");
+        Debug.Log("user :" + userUnitCount);
+        Debug.Log("enemy : " + enemyUnitCount);
+
+        if (userUnitCount > enemyUnitCount && enemyUnitCount == 0)
+        {
+                victoryMenuSet.SetActive(true);
+        }
+       else if (userUnitCount < enemyUnitCount && userUnitCount == 0)
+       {
+                defeatMenuSet.SetActive(true);
+       }
 
     }
+
+
+
+    // ==================== Method =======================
     public void ExitGame()
     {
         SceneManager.LoadScene(0);
     }
 
-    public void ReStartGame()
+    public void RestartGame()
     {
         SceneManager.LoadScene(4);
     }
 
+    public void VictoryStage()
+    {
+        SceneManager.LoadScene(2);
+    }
 
 
 }

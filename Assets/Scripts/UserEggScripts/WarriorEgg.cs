@@ -8,7 +8,6 @@ public class WarriorEgg : EggManager  // warrior는 eggmanager의 정보를 상�
     const string imagePath = "Images/warrior"; // 원하는 스프라이트의 위치를 받아온다.
     static private Sprite image;
 
-
     // protected override를 추가해줘서 상속.
     protected override void Start()
     {
@@ -22,7 +21,6 @@ public class WarriorEgg : EggManager  // warrior는 eggmanager의 정보를 상�
     protected override void Update()
     {
         base.Update();
-
     }
 }
 
