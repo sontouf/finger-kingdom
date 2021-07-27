@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     private Vector2 mousePos;
     private Vector2 Force = new Vector2(0, 0);
     private bool Holding = false;
-    private bool playerMove = false;
+    
 
     Camera Camera;
     // Start is called before the first frame update
@@ -33,8 +33,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerMove)
-        {
+        
             mousePos = Input.mousePosition;
             mousePos = Camera.ScreenToWorldPoint(mousePos);
             if (Input.GetMouseButtonDown(0) && Vector2.Distance(mousePos, transform.position) <= range)
@@ -48,21 +47,12 @@ public class Player : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 GetComponent<Rigidbody2D>().AddForce(Force * speed);
-                if (Force != new Vector2(0, 0))
-                {
-                    TurnManager.MoveChance -= 1;
-                    Debug.Log("남은 이동횟수 : " + TurnManager.MoveChance);
-                    playerMove = false;
-                    if(TurnManager.MoveChance <= 0)
-                    {
-                        turnManager.GetComponent<TurnManager>().enemyTurn();
-                    }
-                }
+                
                 Force = new Vector2(0, 0);
                 Holding = false;
                 
             }
-        }
+        
     }
 
     public void OnCollisionEnter2D(Collision2D coll)
@@ -78,12 +68,7 @@ public class Player : MonoBehaviour
 
     }
 
-    public void myTurn()
-    {
-        playerMove = true;
-        TurnManager.MoveChance += 1;
-        
-    }
+
 
 
 
