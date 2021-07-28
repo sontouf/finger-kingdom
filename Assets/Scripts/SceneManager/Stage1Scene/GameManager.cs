@@ -42,9 +42,9 @@ public class GameManager : MonoBehaviour
 
 
     // ================== static field ===============
-    static public bool isUserTurn = true;
-    static public int userUnitCount = 0;
-    static public int enemyUnitCount = 0;
+    static public bool isUserTurn;
+    static public int userUnitCount;
+    static public int enemyUnitCount;
 
 
     // ======================= private field ====================
@@ -54,27 +54,25 @@ public class GameManager : MonoBehaviour
     public GameObject menuSet; // esc 눌렀을때 나타날 메뉴
     public GameObject victoryMenuSet; // stage 클리어시 나타날 메뉴
     public GameObject defeatMenuSet; // stage 패배시 나타날 메뉴
-
+    private int selectedUserUnitCount = 0;
+    private int selectedEnemyUnitCount = 0;
 
     // =================== userUnit tagName ====================
     private string userEggTagName = "Player";
-    private string worriorTagName = "Warrior";
-    private string archerTagName = "Archer";
-    private string cavalryTagName = "Cavalry";
-    private string healerTagName = "Healer";
 
 
 
     // =================== enemyUnit tagName ====================
     private string enemyEggTagName = "Enemy";
-    private string goblinTagName = "Goblin";
-    private string ogreTagName = "Ogre";
-    private string skeletonTagName = "Skeleton";
 
 
     // Start is called before the first frame update
     void Start()
     {
+        isUserTurn = true;
+        userUnitCount = 0; // 전투화면 내 userUnit 수
+        enemyUnitCount = 0; // 전투화면 내 enemyUnit 수
+
         planePrefeb = Resources.Load(planePrefabPath) as GameObject;
         hurdlePrefeb = Resources.Load(hurdlePrefabPath) as GameObject;
         trapPrefeb = Resources.Load(trapPrefabPath) as GameObject;
@@ -95,52 +93,100 @@ public class GameManager : MonoBehaviour
         EnemyEggSpawnPositions.Add(p5);
         EnemyEggSpawnPositions.Add(p6);
 
-        
+
         // 위치랑 tag 이름 받아와서 egg 객체 생성, 자세한 내용은 eggmanager 참고.
-        foreach (Vector3 pos in EnemyEggSpawnPositions)
+        if ( DontDestroyUserData.storyNumber >= 0) 
         {
-            EggManager.CreateEgg<GoblinEgg>(pos, enemyEggTagName);
-            userUnitCount += 1;
+            if (DontDestroyUserData.storyNumber >= 0)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    EggManager.CreateEgg<GoblinEgg>(EnemyEggSpawnPositions[selectedEnemyUnitCount], enemyEggTagName);
+                    selectedEnemyUnitCount += 1;
+                    enemyUnitCount += 1;
+                }
+            }
         }
-        foreach (Vector3 pos in UserEggSpawnPositions)
+        if (DontDestroyUserData.storyNumber >= 0)
         {
-            EggManager.CreateEgg<WarriorEgg>(pos, userEggTagName);
-            enemyUnitCount += 1;
+            for (int i = 0; i < SelectedUnitData.warriorNumber; i++)
+            {
+                EggManager.CreateEgg<WarriorEgg>(UserEggSpawnPositions[selectedUserUnitCount], userEggTagName);
+                selectedUserUnitCount += 1;
+                userUnitCount += 1;
+            }
+            for (int i = 0; i < SelectedUnitData.archerNumber; i++)
+            {
+                EggManager.CreateEgg<ArcherEgg>(UserEggSpawnPositions[selectedUserUnitCount], userEggTagName);
+                selectedUserUnitCount += 1;
+                userUnitCount += 1;
+            }
+            for (int i = 0; i < SelectedUnitData.shieldNumber; i++)
+            {
+                EggManager.CreateEgg<ShieldEgg>(UserEggSpawnPositions[selectedUserUnitCount], userEggTagName);
+                selectedUserUnitCount += 1;
+                userUnitCount += 1;
+            }
+            for (int i = 0; i < SelectedUnitData.cavalryNumber; i++)
+            {
+                EggManager.CreateEgg<CavalryEgg>(UserEggSpawnPositions[selectedUserUnitCount], userEggTagName);
+                selectedUserUnitCount += 1;
+                userUnitCount += 1;
+            }
+            for (int i = 0; i < SelectedUnitData.healerNumber; i++)
+            {
+                EggManager.CreateEgg<HealerEgg>(UserEggSpawnPositions[selectedUserUnitCount], userEggTagName);
+                selectedUserUnitCount += 1;
+                userUnitCount += 1;
+            }
+            EggManager.GetEggManagersByType<EnemyEggManager>();
         }
     }
 
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetButtonDown("Cancel"))
         {
             if (menuSet.activeSelf)
+            {
                 menuSet.SetActive(false);
+            }
             else
+            {
                 menuSet.SetActive(true);
+            }
         }
+
         if (isUserTurn)
         {
             Debug.Log("player turn");
         }
         else
-            Debug.Log("enemy turn");
-        Debug.Log("user :" + userUnitCount);
-        Debug.Log("enemy : " + enemyUnitCount);
-
-        if (userUnitCount > enemyUnitCount && enemyUnitCount == 0)
         {
-                victoryMenuSet.SetActive(true);
+            Debug.Log("enemy turn");
         }
-       else if (userUnitCount < enemyUnitCount && userUnitCount == 0)
-       {
-                defeatMenuSet.SetActive(true);
-       }
+
+        JudgeResult();
 
     }
 
-
+    public void JudgeResult()
+    {
+        if (userUnitCount > enemyUnitCount && enemyUnitCount == 0)
+        {
+            victoryMenuSet.SetActive(true);
+            if (DontDestroyUserData.stageClearCheck == false)
+            {
+                DontDestroyUserData.stageClearCheck = !DontDestroyUserData.stageClearCheck;
+            }
+        }
+        else if (userUnitCount < enemyUnitCount && userUnitCount == 0)
+        {
+            defeatMenuSet.SetActive(true);
+        }
+    }
 
     // ==================== Method =======================
     public void ExitGame()
@@ -150,13 +196,15 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        EggManager.ClearAll();
         SceneManager.LoadScene(4);
+
     }
 
     public void VictoryStage()
     {
         SceneManager.LoadScene(2);
     }
-
+    
 
 }

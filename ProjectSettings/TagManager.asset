@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Enemy
   - Trap
+  - Warrior
+  - Archer
+  - Shield
+  - Cavalry
+  - Healer
   layers:
   - Default
   - TransparentFX

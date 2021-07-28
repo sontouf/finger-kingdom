@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkeletonEgg : EggManager
+public class SkeletonEgg : EnemyEggManager
 {
     const string imagePath = "Images/goblin"; // 원하는 스프라이트의 위치를 받아온다.
     static private Sprite image;
@@ -17,8 +17,8 @@ public class SkeletonEgg : EggManager
     }
 
     // protected override를 추가해줘서 상속.
-    protected override void Update()
+    protected override void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
     }
 }

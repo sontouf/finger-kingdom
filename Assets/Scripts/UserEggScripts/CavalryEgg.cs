@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CavalryEgg : EggManager
+public class CavalryEgg : UserEggManager
 {
     const string imagePath = "Images/cavalry"; // 원하는 스프라이트의 위치를 받아온다.
     static private Sprite image;
@@ -17,8 +17,8 @@ public class CavalryEgg : EggManager
     }
 
     // protected override를 추가해줘서 상속.
-    protected override void Update()
+    protected override void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
     }
 }

@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using UnityEngine.EventSystems;
 
-public class GoblinEgg : EggManager  // warrior는 eggmanager의 정보를 상속받는다.
+
+public class GoblinEgg : EnemyEggManager  // warrior는 eggmanager의 정보를 상속받는다.
 {
     const string imagePath = "Images/goblin"; // 원하는 스프라이트의 위치를 받아온다.
     static private Sprite image;
-    private int numberCount = 0; // Goblin 유닛 갯수 저장.
 
     // protected override를 추가해줘서 상속.
     protected override void Start()
@@ -18,9 +20,29 @@ public class GoblinEgg : EggManager  // warrior는 eggmanager의 정보를 상�
     }
 
     // protected override를 추가해줘서 상속.
-    protected override void Update()
+    protected override void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        nowTurn = GameManager.isUserTurn; 
+        GameObject otherObject = other.gameObject;
+        EggManager otherEggManager = otherObject.GetComponent<EggManager>();
+/*        if (otherObject.CompareTag("Trap"))
+        {
+            DestroyEgg(this);
+        }*/
+        if (otherObject.CompareTag("Player") && nowTurn)
+        {
+            if (this.gameObject.tag == "Enemy")
+            {
+                otherEggManager.curHp -= damage;
+            }
+            otherObject.GetComponent<HpBarController>()
+                        .SetHealth(otherEggManager.curHp, otherEggManager.maxHp);
+        }
     }
 }
 
