@@ -6,7 +6,9 @@ public class Enemy : MonoBehaviour
 {
     public int hp = 10;
     public int atk = 3;
-    float speed = 50;
+    public GameObject ShakeManager;
+    public float speed = 50;
+    public AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +37,8 @@ public class Enemy : MonoBehaviour
         }
         if (coll.gameObject.CompareTag("Player"))
         {
-            
+            ShakeManager.GetComponent<CameraShake>().Shake();
+            audioSource.Play();
         }
 
     }
