@@ -27,22 +27,23 @@ public class GoblinEgg : EnemyEggManager  // warrior는 eggmanager의 정보를 
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        nowTurn = GameManager.isUserTurn; 
+
         GameObject otherObject = other.gameObject;
         EggManager otherEggManager = otherObject.GetComponent<EggManager>();
 /*        if (otherObject.CompareTag("Trap"))
         {
             DestroyEgg(this);
         }*/
-        if (otherObject.CompareTag("Player") && nowTurn)
+        if (otherObject.CompareTag("Player"))
         {
-            if (this.gameObject.tag == "Enemy")
+            if (CompareTag("Enemy") && GameManager.isUserTurn)
             {
                 otherEggManager.curHp -= damage;
+                otherObject.GetComponent<HpBarController>()
+                    .SetHealth(otherEggManager.curHp, otherEggManager.maxHp);
             }
-            otherObject.GetComponent<HpBarController>()
-                        .SetHealth(otherEggManager.curHp, otherEggManager.maxHp);
         }
     }
+
 }
 

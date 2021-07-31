@@ -5,12 +5,14 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
 
-public class UserEggManager : EggManager, IDragHandler, IEndDragHandler
+public class UserEggManager : EggManager,IDragHandler, IEndDragHandler
 {
     private Vector2 force = new Vector2(0, 0);
     public Vector2 mousePos;
     public Camera mainCamera;
     EggManager eggManager;
+
+
 
     protected override void Start()
     {
@@ -27,7 +29,6 @@ public class UserEggManager : EggManager, IDragHandler, IEndDragHandler
             mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         }
     }
-
     public void OnDrag(PointerEventData data)
     {
         if (GameManager.isUserTurn)

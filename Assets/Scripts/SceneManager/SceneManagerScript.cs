@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class SceneManagerScript : MonoBehaviour
 {
 
-
     public void MainScene()
     {
         SceneManager.LoadScene(0);
@@ -18,6 +17,7 @@ public class SceneManagerScript : MonoBehaviour
     }
     public void StageSelectScene()
     {
+        EggManager.ClearAll();
         SceneManager.LoadScene(2);
     }
     public void ChoiceUnitScene()

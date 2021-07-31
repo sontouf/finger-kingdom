@@ -17,7 +17,6 @@ public class WarriorEgg : UserEggManager  // warrior는 eggmanager의 정보를 
         image = Resources.Load<Sprite>(imagePath); // 스프라이트의 위치를 통해 받아온 스프라이트를 image에 저장해둔다.
         spriteRenderer.sprite = image; // 저장한 스프라이트를 실제 객체의 sprite로 전달.
         damage = 15; // 데미지도 변경.
-        gameObject.AddComponent<PlayerEggMove>();
         speed = 50;
     }
 
@@ -29,19 +28,23 @@ public class WarriorEgg : UserEggManager  // warrior는 eggmanager의 정보를 
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        nowTurn = GameManager.isUserTurn;
+        
         GameObject otherObject = other.gameObject;
         EggManager otherEggManager = otherObject.GetComponent<EggManager>();
 /*        if (otherObject.CompareTag("Trap"))
         {
             DestroyEgg(this);
         }*/
-        if (otherObject.CompareTag("Enemy") && nowTurn)
+        if (otherObject.CompareTag("Enemy"))
         {
-            otherEggManager.curHp -= damage;
-            otherObject.GetComponent<HpBarController>()
+            if (CompareTag("Player") && !GameManager.isUserTurn)
+            {
+                otherEggManager.curHp -= damage;
+                otherObject.GetComponent<HpBarController>()
                         .SetHealth(otherEggManager.curHp, otherEggManager.maxHp);
+            }
         }
     }
+
 }
 

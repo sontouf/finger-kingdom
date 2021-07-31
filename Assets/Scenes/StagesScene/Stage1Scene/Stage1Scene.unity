@@ -2103,6 +2103,7 @@ GameObject:
   - component: {fileID: 1902160395}
   - component: {fileID: 1902160397}
   - component: {fileID: 1902160396}
+  - component: {fileID: 1902160398}
   m_Layer: 0
   m_Name: Master
   m_TagString: Untagged
@@ -2151,6 +2152,23 @@ MonoBehaviour:
   menuSet: {fileID: 1617947759}
   victoryMenuSet: {fileID: 598989352}
   defeatMenuSet: {fileID: 1322898137}
+--- !u!114 &1902160398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902160394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa811769ee4e274b8a6ca5001e9395b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Min: 0
+  players: []
+  closestPlayer: {fileID: 0}
+  force: {x: 0, y: 0}
+  enemyUnitIndex: 0
 --- !u!1 &1975835459
 GameObject:
   m_ObjectHideFlags: 0
