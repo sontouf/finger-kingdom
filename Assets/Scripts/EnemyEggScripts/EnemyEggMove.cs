@@ -22,8 +22,6 @@ public class EnemyEggMove : MonoBehaviour
     {
         if (EnemyEggManager.enemyEggManagers.Count > 0 && !GameManager.isUserTurn && checkOneMove == 1)
         {
-            Debug.Log("GameManager.isUserTurn : " + GameManager.isUserTurn);
-            Debug.Log("checkOneMove : " + checkOneMove);
             checkOneMove = 0;
             Min = 99999;
             Invoke("CalculateClosestPlayer", 1.4f);
@@ -59,7 +57,7 @@ public class EnemyEggMove : MonoBehaviour
                 float result = force.x * force.x + force.y * force.y;
                 if (Math.Abs(result) < 3)
                 {
-                    force = 2.3f * force.normalized;
+                    force = 3f * force.normalized;
                 }
                 MoveEgg();
             }

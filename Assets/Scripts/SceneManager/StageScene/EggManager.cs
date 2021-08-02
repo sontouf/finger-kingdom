@@ -13,6 +13,7 @@ public class EggManager : MonoBehaviour//  IPointerEnterHandler
     // ===================== [ constant fields ] =========================
     const string eggPrefabPath = "Prefabs/EggPrefab"; // eggPrefab의 위치정보.
 
+
     // ====================== [ static eggManagers ] ==========================
     // static 변수로 선언되어 eggPrefab 객체들의 갯수를 관리한다.
     static public List<EggManager> eggManagers = new List<EggManager>();
@@ -41,6 +42,7 @@ public class EggManager : MonoBehaviour//  IPointerEnterHandler
     // 이때 type을 매개변수로 만들어줘서 상속을 받게 해준다. warrior, archer, goblin등으로 변신가능
     static public void CreateEgg<EggType>(Vector3 position, string tagName) where EggType : EggManager
     {
+
         eggPrefab = Resources.Load(eggPrefabPath) as GameObject;
         // 객체 생성
         GameObject newEggObject =
@@ -75,14 +77,12 @@ public class EggManager : MonoBehaviour//  IPointerEnterHandler
     static private GameObject eggPrefab;
 
 
-
     // ====================== [ private fields ] ==========================
     // egg의 sprite 관련 변수
     public SpriteRenderer spriteRenderer;
-    new public Rigidbody2D rigidbody2D;
+    public Rigidbody2D rigidbody2D;
     // egg의 이동 관련 변수
     public float speed = 100;
-    public float mass;
 
     // egg의 Hp 관련 변수
     public float maxHp = 100;
@@ -90,7 +90,12 @@ public class EggManager : MonoBehaviour//  IPointerEnterHandler
     private HpBarController hpBarController;
     public float damage = 10;
 
+
     // egg 그 외 기타 정보
+
+
+  
+    public AudioClip audioSourceClip;
 
     // protected virtual을 추가해줘서 상속.
     // Egg의 메소드 관련 초기화.
@@ -98,9 +103,12 @@ public class EggManager : MonoBehaviour//  IPointerEnterHandler
     {
         curHp = maxHp;
         hpBarController = gameObject.AddComponent<HpBarController>();
+
+
         hpBarController.Init(curHp, maxHp);
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
+
     }
 
 
@@ -109,7 +117,7 @@ public class EggManager : MonoBehaviour//  IPointerEnterHandler
     protected virtual void FixedUpdate()
     {
         // 게임판을 벗어나면 egg 소멸 << 낙사 >>
-        if (transform.position.x > 6.15 || transform.position.x < -6.15 || transform.position.y > 3.7 || transform.position.y < -3.7)
+        if (transform.position.x > 7.1 || transform.position.x < -7.1 || transform.position.y > 3.8 || transform.position.y < -3.8)
         {
             DestroyEgg();
         }
@@ -120,11 +128,13 @@ public class EggManager : MonoBehaviour//  IPointerEnterHandler
 
     }
 
-    public void MoveEgg(Vector2 force)
+    public void MoveEgg(Vector3 force)
     {
         rigidbody2D.AddForce(force * speed);
-        force = new Vector2(0, 0);
+        force = new Vector3(0, 0, 0);
     }
+
+
 }
 
 

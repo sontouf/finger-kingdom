@@ -21,4 +21,23 @@ public class GhostEgg : EnemyEggManager
     {
         base.FixedUpdate();
     }
+
+    public void OnCollisionEnter2D(Collision2D other)
+    {
+        GameObject otherObject = other.gameObject;
+        EggManager otherEggManager = otherObject.GetComponent<EggManager>();
+        /*        if (otherObject.CompareTag("Trap"))
+                {
+                    DestroyEgg(this);
+                }*/
+        if (otherObject.CompareTag("Player"))
+        {
+            if (CompareTag("Enemy") && GameManager.isUserTurn)
+            {
+                otherEggManager.curHp -= damage;
+                otherObject.GetComponent<HpBarController>()
+                    .SetHealth(otherEggManager.curHp, otherEggManager.maxHp);
+            }
+        }
+    }
 }

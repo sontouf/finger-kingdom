@@ -26,9 +26,9 @@ public class WarriorEgg : UserEggManager  // warrior는 eggmanager의 정보를 
         base.FixedUpdate();
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    protected override void OnCollisionEnter2D(Collision2D other)
     {
-        
+        base.OnCollisionEnter2D(other);
         GameObject otherObject = other.gameObject;
         EggManager otherEggManager = otherObject.GetComponent<EggManager>();
 /*        if (otherObject.CompareTag("Trap"))
@@ -37,7 +37,7 @@ public class WarriorEgg : UserEggManager  // warrior는 eggmanager의 정보를 
         }*/
         if (otherObject.CompareTag("Enemy"))
         {
-            if (CompareTag("Player") && !GameManager.isUserTurn)
+            if (CompareTag("Player") && !GameManager.isUserTurn && otherEggManager != null)
             {
                 otherEggManager.curHp -= damage;
                 otherObject.GetComponent<HpBarController>()

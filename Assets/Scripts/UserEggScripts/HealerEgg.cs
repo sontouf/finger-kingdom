@@ -23,7 +23,7 @@ public class HealerEgg : UserEggManager
         base.FixedUpdate();
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private new void OnCollisionEnter2D(Collision2D other)
     {
         GameObject otherObject = other.gameObject;
         EggManager otherEggManager = otherObject.GetComponent<EggManager>();

@@ -71,7 +71,8 @@ public class GameManager : MonoBehaviour
     static public bool isUserTurn;
     static public int userUnitCount;
     static public int enemyUnitCount;
-    static public int stageNumber;
+    static public int bossUnitCount;
+    static public int stageNumber = 0;
 
     // ======================= private field ====================
     private GameObject planePrefeb;
@@ -85,6 +86,8 @@ public class GameManager : MonoBehaviour
     private string userEggTagName = "Player";
     // =================== enemyUnit tagName ====================
     private string enemyEggTagName = "Enemy";
+    private string enemyBossTagName = "Enemy";
+
 
     // Start is called before the first frame update
     void Start()
@@ -92,7 +95,7 @@ public class GameManager : MonoBehaviour
         isUserTurn = true;
         userUnitCount = 0; // 전투화면 내 userUnit 수
         enemyUnitCount = 0; // 전투화면 내 enemyUnit 수
-
+        bossUnitCount = 0;
         planePrefeb = Resources.Load(planePrefabPath) as GameObject;
         hurdlePrefeb = Resources.Load(hurdlePrefabPath) as GameObject;
         trapPrefeb = Resources.Load(trapPrefabPath) as GameObject;
@@ -135,11 +138,17 @@ public class GameManager : MonoBehaviour
 
         // 위치랑 tag 이름 받아와서 egg 객체 생성, 자세한 내용은 eggmanager 참고.
         int idx = 0;
+        if (stageNumber == 4)
+        {
+            EnemyEggSpawnPositions.Remove(p9);
+            EnemyEggSpawnPositions.Remove(p10);
+            EnemyEggSpawnPositions.Remove(p13);
+            EnemyEggSpawnPositions.Remove(p14);
+        }
         for (int i = 0; i < EnemyEggSpawnPositions.Count; i++)
         {
             checkVoid.Add(i);
         }
-
         if (stageNumber == 1)
         {
             idx = Random.Range(0, checkVoid.Count);
@@ -150,6 +159,7 @@ public class GameManager : MonoBehaviour
                 EnemyEggSpawnPositions.Remove(EnemyEggSpawnPositions[idx]);
                 idx = Random.Range(0, checkVoid.Count);
                 enemyUnitCount += 1;
+                Debug.Log("checkdd : " + stageNumber);
             }
         }
         else if (stageNumber == 2)
@@ -187,7 +197,7 @@ public class GameManager : MonoBehaviour
             }
 
             idx = Random.Range(0, checkVoid.Count);
-            for (int i = 2; i > 0; --i)
+            for (int i = 1; i > 0; --i)
             {
                 EggManager.CreateEgg<OakEgg>(EnemyEggSpawnPositions[idx], enemyEggTagName);
                 EnemyEggSpawnPositions.Remove(EnemyEggSpawnPositions[idx]);
@@ -197,9 +207,9 @@ public class GameManager : MonoBehaviour
             }
 
             idx = Random.Range(0, checkVoid.Count);
-            for (int i = 3; i > 0; --i)
+            for (int i = 2; i > 0; --i)
             {
-                EggManager.CreateEgg<SkeletonEgg>(EnemyEggSpawnPositions[idx], enemyEggTagName);
+                EggManager.CreateEgg<WolfEgg>(EnemyEggSpawnPositions[idx], enemyEggTagName);
                 EnemyEggSpawnPositions.Remove(EnemyEggSpawnPositions[idx]);
                 checkVoid.Remove(checkVoid[idx]);
                 idx = Random.Range(0, checkVoid.Count);
@@ -208,48 +218,7 @@ public class GameManager : MonoBehaviour
         }
         else if (stageNumber == 4)
         {
-            idx = Random.Range(0, checkVoid.Count);
-            for (int i = 3; i > 0; --i)
-            {
-                EggManager.CreateEgg<GoblinEgg>(EnemyEggSpawnPositions[idx], enemyEggTagName);
-                EnemyEggSpawnPositions.Remove(EnemyEggSpawnPositions[idx]);
-                checkVoid.Remove(checkVoid[idx]); 
-                idx = Random.Range(0, checkVoid.Count);
-                enemyUnitCount += 1;
-            }
 
-            idx = Random.Range(0, checkVoid.Count);
-            for (int i = 2; i > 0; --i)
-            {
-                EggManager.CreateEgg<OakEgg>(EnemyEggSpawnPositions[idx], enemyEggTagName);
-                EnemyEggSpawnPositions.Remove(EnemyEggSpawnPositions[idx]);
-                checkVoid.Remove(checkVoid[idx]);
-                idx = Random.Range(0, checkVoid.Count);
-                enemyUnitCount += 1;
-            }
-
-            idx = Random.Range(0, checkVoid.Count);
-            for (int i = 3; i > 0; --i)
-            {
-                EggManager.CreateEgg<SkeletonEgg>(EnemyEggSpawnPositions[idx], enemyEggTagName);
-                EnemyEggSpawnPositions.Remove(EnemyEggSpawnPositions[idx]);
-                checkVoid.Remove(checkVoid[idx]);
-                idx = Random.Range(0, checkVoid.Count);
-                enemyUnitCount += 1;
-            }
-
-            idx = Random.Range(0, checkVoid.Count);
-            for (int i = 3; i > 0; --i)
-            {
-                EggManager.CreateEgg<GhostEgg>(EnemyEggSpawnPositions[idx], enemyEggTagName);
-                EnemyEggSpawnPositions.Remove(EnemyEggSpawnPositions[idx]);
-                checkVoid.Remove(checkVoid[idx]);
-                idx = Random.Range(0, checkVoid.Count);
-                enemyUnitCount += 1;
-            }
-        }
-        else if (stageNumber == 5)
-        {
             idx = Random.Range(0, checkVoid.Count);
             for (int i = 3; i > 0; --i)
             {
@@ -270,35 +239,20 @@ public class GameManager : MonoBehaviour
                 enemyUnitCount += 1;
             }
 
+
             idx = Random.Range(0, checkVoid.Count);
-            for (int i = 3; i > 0; --i)
+            for (int i = 2; i > 0; --i)
             {
-                EggManager.CreateEgg<SkeletonEgg>(EnemyEggSpawnPositions[idx], enemyEggTagName);
+                EggManager.CreateEgg<WolfEgg>(EnemyEggSpawnPositions[idx], enemyEggTagName);
                 EnemyEggSpawnPositions.Remove(EnemyEggSpawnPositions[idx]);
                 checkVoid.Remove(checkVoid[idx]);
                 idx = Random.Range(0, checkVoid.Count);
                 enemyUnitCount += 1;
             }
 
-            idx = Random.Range(0, checkVoid.Count);
-            for (int i = 3; i > 0; --i)
-            {
-                EggManager.CreateEgg<GhostEgg>(EnemyEggSpawnPositions[idx], enemyEggTagName);
-                EnemyEggSpawnPositions.Remove(EnemyEggSpawnPositions[idx]);
-                checkVoid.Remove(checkVoid[idx]);
-                idx = Random.Range(0, checkVoid.Count);
-                enemyUnitCount += 1;
-            }
-
-            idx = Random.Range(0, checkVoid.Count);
-            for (int i = 3; i > 0; --i)
-            {
-                EggManager.CreateEgg<OgreEgg>(EnemyEggSpawnPositions[idx], enemyEggTagName);
-                EnemyEggSpawnPositions.Remove(EnemyEggSpawnPositions[idx]);
-                checkVoid.Remove(checkVoid[idx]);
-                idx = Random.Range(0, checkVoid.Count);
-                enemyUnitCount += 1;
-            }
+            Chapter1Boss.CreateBoss(new Vector3(4.5f,0,0),enemyBossTagName );
+            bossUnitCount -= 1;
+            enemyUnitCount += 1;
         }
 
         int iidx = checkVoid.Count;
@@ -409,12 +363,28 @@ public class GameManager : MonoBehaviour
     {
         if (userUnitCount > enemyUnitCount && enemyUnitCount == 0)
         {
-            victoryMenuSet.SetActive(true);
-            if (DontDestroyUserData.stageClearCheck == false)
+            if (stageNumber == 4)
             {
-                DontDestroyUserData.stageClearCheck = !DontDestroyUserData.stageClearCheck;
-                userUnitCount = 0;
-                enemyUnitCount = 0;
+                if(bossUnitCount == 0)
+                {
+                    victoryMenuSet.SetActive(true);
+                    if (DontDestroyUserData.stageClearCheck == false)
+                    {
+                        DontDestroyUserData.stageClearCheck = !DontDestroyUserData.stageClearCheck;
+                        userUnitCount = 0;
+                        enemyUnitCount = 0;
+                    }
+                }
+            }
+            else
+            {
+                victoryMenuSet.SetActive(true);
+                if (DontDestroyUserData.stageClearCheck == false)
+                {
+                    DontDestroyUserData.stageClearCheck = !DontDestroyUserData.stageClearCheck;
+                    userUnitCount = 0;
+                    enemyUnitCount = 0;
+                }
             }
         }
         else if (userUnitCount < enemyUnitCount && userUnitCount == 0)

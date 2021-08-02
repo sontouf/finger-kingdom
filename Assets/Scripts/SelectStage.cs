@@ -26,14 +26,14 @@ public class SelectStage : MonoBehaviour
     }
     public void ClickStage2()
     {
-        if (DontDestroyUserData.storyNumber == 1)
+        if (DontDestroyUserData.storyNumber >= 1)
         {
             GameManager.stageNumber = 2;
         }
     }
     public void ClickStage3()
     {
-        if (DontDestroyUserData.storyNumber == 2)
+        if (DontDestroyUserData.storyNumber >= 2)
         {
             GameManager.stageNumber = 3;
         }
@@ -41,14 +41,14 @@ public class SelectStage : MonoBehaviour
     }
     public void ClickStage4()
     {
-        if (DontDestroyUserData.storyNumber == 3)
+        if (DontDestroyUserData.storyNumber >= 3)
         {
             GameManager.stageNumber = 4;
         }
     }
     public void ClickStage5()
     {
-        if (DontDestroyUserData.storyNumber == 4)
+        if (DontDestroyUserData.storyNumber >= 4)
         {
             GameManager.stageNumber = 5;
         }

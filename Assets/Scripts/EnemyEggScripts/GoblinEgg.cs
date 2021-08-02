@@ -25,9 +25,8 @@ public class GoblinEgg : EnemyEggManager  // warrior는 eggmanager의 정보를 
         base.FixedUpdate();
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public void OnCollisionEnter2D(Collision2D other)
     {
-
         GameObject otherObject = other.gameObject;
         EggManager otherEggManager = otherObject.GetComponent<EggManager>();
 /*        if (otherObject.CompareTag("Trap"))

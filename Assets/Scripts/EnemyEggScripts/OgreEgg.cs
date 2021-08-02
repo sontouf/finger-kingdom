@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OgreEgg : EnemyEggManager
 {
-    const string imagePath = "Images/goblin"; // 원하는 스프라이트의 위치를 받아온다.
+    const string imagePath = "Images/ogre"; // 원하는 스프라이트의 위치를 받아온다.
     static private Sprite image;
 
     // protected override를 추가해줘서 상속.
@@ -20,5 +20,24 @@ public class OgreEgg : EnemyEggManager
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
+    }
+
+    public void OnCollisionEnter2D(Collision2D other)
+    {
+        GameObject otherObject = other.gameObject;
+        EggManager otherEggManager = otherObject.GetComponent<EggManager>();
+        /*        if (otherObject.CompareTag("Trap"))
+                {
+                    DestroyEgg(this);
+                }*/
+        if (otherObject.CompareTag("Player"))
+        {
+            if (CompareTag("Enemy") && GameManager.isUserTurn)
+            {
+                otherEggManager.curHp -= damage;
+                otherObject.GetComponent<HpBarController>()
+                    .SetHealth(otherEggManager.curHp, otherEggManager.maxHp);
+            }
+        }
     }
 }

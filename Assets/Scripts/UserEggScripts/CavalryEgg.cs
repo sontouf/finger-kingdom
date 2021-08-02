@@ -21,4 +21,24 @@ public class CavalryEgg : UserEggManager
     {
         base.FixedUpdate();
     }
+
+    protected override void OnCollisionEnter2D(Collision2D other)
+    {
+        base.OnCollisionEnter2D(other);
+        GameObject otherObject = other.gameObject;
+        EggManager otherEggManager = otherObject.GetComponent<EggManager>();
+        /*        if (otherObject.CompareTag("Trap"))
+                {
+                    DestroyEgg(this);
+                }*/
+        if (otherObject.CompareTag("Enemy"))
+        {
+            if (CompareTag("Player") && !GameManager.isUserTurn && otherEggManager != null)
+            {
+                otherEggManager.curHp -= damage;
+                otherObject.GetComponent<HpBarController>()
+                        .SetHealth(otherEggManager.curHp, otherEggManager.maxHp);
+            }
+        }
+    }
 }
