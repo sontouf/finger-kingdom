@@ -23,7 +23,7 @@ public class HpBarController : MonoBehaviour
     {
         if (hpBar != null)
         {
-            hpBar.transform.position = Camera.main.WorldToScreenPoint(transform.position + offset);
+            hpBar.transform.position = Camera.main.WorldToScreenPoint(gameObject.GetComponent<Rigidbody2D>().position + (Vector2)offset);
             // World 화면을 기준으로 마우스위치를 받아와서 CirclePrefab의 위치로 위치한다.
         }
     }

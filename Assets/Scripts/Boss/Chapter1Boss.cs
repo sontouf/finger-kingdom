@@ -13,9 +13,10 @@ public class Chapter1Boss : MonoBehaviour
     static public GameObject chapter1BossPrefab;
     public float appleSpeed;
     private bool checkOneMove = true;
-
-    GameObject closestPlayer;
+    public GameObject[] players;
+    public GameObject closestPlayer;
     public int pattern;
+    public Vector3 force;
 
      static public void CreateBoss(Vector3 position, string tagName)
     {
@@ -34,7 +35,6 @@ public class Chapter1Boss : MonoBehaviour
     protected virtual void DestroyEgg()
     {
         Destroy(gameObject); // 게임세상 내 객체를 소멸시킨다.
-        GameManager.bossUnitCount = 0;
     }
 
 
@@ -54,7 +54,6 @@ public class Chapter1Boss : MonoBehaviour
         }*/
         if (checkOneMove == true)
         {
-            Debug.Log("hi");
             Invoke("treePattern",4f);
             checkOneMove = !checkOneMove;
         }
@@ -62,12 +61,33 @@ public class Chapter1Boss : MonoBehaviour
         {
             GameManager.isUserTurn = !GameManager.isUserTurn;
         }
-        if (transform.position.x > 6.15 || transform.position.x < -6.15 || transform.position.y > 3.7 || transform.position.y < -3.7)
+        if (transform.position.x > 7.3 || transform.position.x < -7.3 || transform.position.y > 4.0 || transform.position.y < -4.0)
         {
-            // DestroyEgg();
+            DestroyEgg();
+            GameManager.bossUnitCount -= 1;
         }
-
+        FindClosestPlayer();
     }
+
+    public void FindClosestPlayer()
+    {
+        players = GameObject.FindGameObjectsWithTag("Player");
+        float Min = 999999;
+        foreach (GameObject player in players)
+        {
+            float distance = Vector2.Distance(transform.position, player.transform.position);
+            if (distance < Min)
+            {
+                Min = distance;
+                closestPlayer = player;
+            }
+        }
+        if (closestPlayer != null)
+        {
+            force = closestPlayer.transform.position - transform.position;
+        }
+    }
+
     public void treePattern()
     {
         pattern = UnityEngine.Random.Range(1, 3);
@@ -90,61 +110,42 @@ public class Chapter1Boss : MonoBehaviour
         }
         pattern = 0;
         checkOneMove = !checkOneMove;
-        Debug.Log("CcheckOneMove" + checkOneMove);
     }
 
 
     public void appleShot1()
     {
-        Debug.Log("Boss 1  : ");
-        for (int i = -2; i < 3; i++)
+        for (int i = -1; i < 2; i++)
         {
             chapter1BossApplePrefab = Resources.Load(chapter1BossApplePrefabPath) as GameObject;
             GameObject apple = Instantiate(chapter1BossApplePrefab);
             apple.AddComponent<Chapter1BossAppleManager>();
             apple.transform.position = transform.position;
-            apple.GetComponent<Rigidbody2D>().AddForce(appleSpeed * (Vector2.left + new Vector2(0, i * 0.3f)));
-            Debug.Log("vector : " + appleSpeed * (Vector2.right + new Vector2(0, i * 0.3f)));
+            apple.GetComponent<Rigidbody2D>().AddForce(appleSpeed * (force.normalized + new Vector3(0, i * 0.3f,0)));
         }
     }
 
 
     public void appleShot2()
     {
-        for (float i = -1.5f; i < 2; i++)
+        for (float i = -0.5f; i < 1; i++)
         {
             chapter1BossApplePrefab = Resources.Load(chapter1BossApplePrefabPath) as GameObject;
             GameObject apple = Instantiate(chapter1BossApplePrefab);
             apple.AddComponent<Chapter1BossAppleManager>();
             apple.transform.position = transform.position;
-            apple.GetComponent<Rigidbody2D>().AddForce((Vector2.left + new Vector2(0, i * 0.2f))* appleSpeed );
-            Debug.Log("vector : " + appleSpeed * (Vector2.left + new Vector2(0, i * 0.2f)));
+            apple.GetComponent<Rigidbody2D>().AddForce(appleSpeed * (force.normalized + new Vector3(0, i * 0.2f,0)));
         }
     }
     public void appleShot3()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-        float Min = 999999;
-
-        foreach (GameObject player in players)
-        {
-            float distance = Vector2.Distance(transform.position, player.transform.position);
-            if (distance < Min)
-            {
-                Min = distance;
-                closestPlayer = player;
-            }
-        }
-        if (closestPlayer != null)
-        {
-            chapter1BossApplePrefab = Resources.Load(chapter1BossApplePrefabPath) as GameObject;
-            GameObject apple = Instantiate(chapter1BossApplePrefab);
-            apple.AddComponent<Chapter1BossAppleManager>();
-            apple.transform.position = transform.position;
-            apple.GetComponent<Rigidbody2D>().AddForce((closestPlayer.transform.position - transform.position).normalized * appleSpeed);
-        }
+        chapter1BossApplePrefab = Resources.Load(chapter1BossApplePrefabPath) as GameObject;
+        GameObject apple = Instantiate(chapter1BossApplePrefab);
+        apple.AddComponent<Chapter1BossAppleManager>();
+        apple.transform.position = transform.position;
+        apple.GetComponent<Rigidbody2D>().AddForce(force.normalized * appleSpeed);
     }
+
 
 
 }

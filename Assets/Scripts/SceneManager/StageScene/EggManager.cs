@@ -94,17 +94,12 @@ public class EggManager : MonoBehaviour//  IPointerEnterHandler
     // egg 그 외 기타 정보
 
 
-  
-    public AudioClip audioSourceClip;
-
     // protected virtual을 추가해줘서 상속.
     // Egg의 메소드 관련 초기화.
     protected virtual void Start()
     {
         curHp = maxHp;
         hpBarController = gameObject.AddComponent<HpBarController>();
-
-
         hpBarController.Init(curHp, maxHp);
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         rigidbody2D = gameObject.GetComponent<Rigidbody2D>();

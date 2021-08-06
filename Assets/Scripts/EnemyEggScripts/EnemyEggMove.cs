@@ -31,15 +31,16 @@ public class EnemyEggMove : MonoBehaviour
 
     public void CalculateClosestPlayer()
     {
+        int num = EnemyEggManager.enemyEggManagers.Count;
         players = GameObject.FindGameObjectsWithTag("Player");
         if (players != null)
         {
             foreach (GameObject player in players)
             {
-                enemyUnitIndex = UnityEngine.Random.Range(0, EnemyEggManager.enemyEggManagers.Count);
-                if (enemyUnitIndex <= EnemyEggManager.enemyEggManagers.Count && EnemyEggManager.enemyEggManagers.Count > 0)
+                enemyUnitIndex = UnityEngine.Random.Range(0, num);
+                if (enemyUnitIndex <= num && num > 0)
                 {
-                    distance = Vector2.Distance(EnemyEggManager.enemyEggManagers[enemyUnitIndex].transform.position, player.transform.position);
+                    distance = Vector2.Distance(EnemyEggManager.enemyEggManagers[enemyUnitIndex].GetComponent<Rigidbody2D>().position, player.GetComponent<Rigidbody2D>().position);
                 }
                 if (distance < Min)
                 {
@@ -49,10 +50,9 @@ public class EnemyEggMove : MonoBehaviour
             }
             if (closestPlayer != null)
             {
-                
-                if (enemyUnitIndex <= EnemyEggManager.enemyEggManagers.Count && EnemyEggManager.enemyEggManagers.Count > 0)
+                if (enemyUnitIndex <= num && num > 0)
                 {
-                    force = (Vector2)closestPlayer.transform.position - (Vector2)EnemyEggManager.enemyEggManagers[enemyUnitIndex].transform.position;
+                    force = (Vector2)closestPlayer.GetComponent<Rigidbody2D>().position - (Vector2)EnemyEggManager.enemyEggManagers[enemyUnitIndex].GetComponent<Rigidbody2D>().position;
                 }
                 float result = force.x * force.x + force.y * force.y;
                 if (Math.Abs(result) < 3)
@@ -66,7 +66,8 @@ public class EnemyEggMove : MonoBehaviour
 
     public void MoveEgg()
     {
-        if (enemyUnitIndex <= EnemyEggManager.enemyEggManagers.Count && EnemyEggManager.enemyEggManagers.Count > 0)
+        int num = EnemyEggManager.enemyEggManagers.Count;
+        if (enemyUnitIndex <= num && num > 0)
         {
             EnemyEggManager.enemyEggManagers[enemyUnitIndex].MoveEgg(force);
             GameManager.isUserTurn = !GameManager.isUserTurn;
@@ -75,9 +76,9 @@ public class EnemyEggMove : MonoBehaviour
         }
         else
         {
-            if (EnemyEggManager.enemyEggManagers.Count > 0)
+            if (num > 0)
             {
-                enemyUnitIndex = UnityEngine.Random.Range(0, EnemyEggManager.enemyEggManagers.Count);
+                enemyUnitIndex = UnityEngine.Random.Range(0, num);
                 EnemyEggManager.enemyEggManagers[enemyUnitIndex].MoveEgg(force);
                 GameManager.isUserTurn = !GameManager.isUserTurn;
                 checkOneMove = 1;

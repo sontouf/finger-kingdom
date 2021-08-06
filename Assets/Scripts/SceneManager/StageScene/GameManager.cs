@@ -251,7 +251,7 @@ public class GameManager : MonoBehaviour
             }
 
             Chapter1Boss.CreateBoss(new Vector3(4.5f,0,0),enemyBossTagName );
-            bossUnitCount -= 1;
+            bossUnitCount += 1;
             enemyUnitCount += 1;
         }
 
@@ -336,6 +336,9 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
+            Debug.Log("userUnitCount : " + userUnitCount);
+            Debug.Log("enemyUnitCount : " + enemyUnitCount);
+            Debug.Log("BossUnitCount : " + bossUnitCount);
             if (menuSet.activeSelf)
             {
                 menuSet.SetActive(false);
@@ -361,22 +364,9 @@ public class GameManager : MonoBehaviour
 
     public void JudgeResult()
     {
-        if (userUnitCount > enemyUnitCount && enemyUnitCount == 0)
+        if (stageNumber == 4)
         {
-            if (stageNumber == 4)
-            {
-                if(bossUnitCount == 0)
-                {
-                    victoryMenuSet.SetActive(true);
-                    if (DontDestroyUserData.stageClearCheck == false)
-                    {
-                        DontDestroyUserData.stageClearCheck = !DontDestroyUserData.stageClearCheck;
-                        userUnitCount = 0;
-                        enemyUnitCount = 0;
-                    }
-                }
-            }
-            else
+            if (bossUnitCount == 0)
             {
                 victoryMenuSet.SetActive(true);
                 if (DontDestroyUserData.stageClearCheck == false)
@@ -385,6 +375,16 @@ public class GameManager : MonoBehaviour
                     userUnitCount = 0;
                     enemyUnitCount = 0;
                 }
+            }
+        }
+        if (userUnitCount > enemyUnitCount && enemyUnitCount == 0)
+        {
+            victoryMenuSet.SetActive(true);
+            if (DontDestroyUserData.stageClearCheck == false)
+            {
+                DontDestroyUserData.stageClearCheck = !DontDestroyUserData.stageClearCheck;
+                userUnitCount = 0;
+                enemyUnitCount = 0;
             }
         }
         else if (userUnitCount < enemyUnitCount && userUnitCount == 0)

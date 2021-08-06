@@ -12,12 +12,36 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene/HowToPlayScene.unity
     guid: fd33762004067ca4199cc304d54297bb
   - enabled: 1
-    path: Assets/Scenes/StageSelectScene.unity
+    path: Assets/Scenes/MainScene/ChapterSelectScene.unity
+    guid: 37460f86d469a0747842c6f4b33194e2
+  - enabled: 1
+    path: Assets/Scenes/MainScene/Chapter1StageSelectScene.unity
     guid: 5f44ec0e3893c064f904aaa846051537
   - enabled: 1
-    path: Assets/Scenes/StagesScene/ChoiceUnitScene.unity
+    path: Assets/Scenes/MainScene/Chapter2StageSelectScene.unity
+    guid: 7af87c4d3b08f2a43a484284593877b6
+  - enabled: 1
+    path: Assets/Scenes/MainScene/Chapter3StageSelectScene.unity
+    guid: d1830fbebfd255f46a721db1e1fef34c
+  - enabled: 1
+    path: Assets/Scenes/MainScene/Chapter4StageSelectScene.unity
+    guid: 59e5c142c14b0564c908590e977f5419
+  - enabled: 1
+    path: Assets/Scenes/MainScene/ChaptersScene/ChoiceUnitScene.unity
     guid: a57a7d54a6289154d9f9dbf7acddca2e
   - enabled: 1
-    path: Assets/Scenes/StagesScene/Stage1Scene/Stage1Scene.unity
+    path: Assets/Scenes/MainScene/ChaptersScene/Chapter1StageScene.unity
     guid: 7ee92a0826c02314d9c32775f16fe45a
+  - enabled: 1
+    path: Assets/Scenes/MainScene/ChaptersScene/Chapter2StageScene.unity
+    guid: 40cee7822cf168d47817df05a2879cc5
+  - enabled: 1
+    path: Assets/Scenes/MainScene/ChaptersScene/Chapter3StageScene.unity
+    guid: c23ca965c43a1a24183d758c7f0ad28c
+  - enabled: 1
+    path: Assets/Scenes/MainScene/ChaptersScene/Chapter4StagfeScene.unity
+    guid: c7d65d40edcec2d4bba6ed2384ffb89c
+  - enabled: 1
+    path: Assets/Scenes/MainScene/SmithyScene.unity
+    guid: 29894c0eb0e95664ea50dd01dee8d538
   m_configObjects: {}

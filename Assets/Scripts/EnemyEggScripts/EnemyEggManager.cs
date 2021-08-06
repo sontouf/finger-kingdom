@@ -10,7 +10,7 @@ public class EnemyEggManager : EggManager
     protected override void Start()
     {
         base.Start();
-        this.gameObject.layer = 9;
+        this.gameObject.layer = 10;
 
     }
 

@@ -13,11 +13,10 @@ public class UserEggManager : EggManager, IBeginDragHandler,IDragHandler, IEndDr
     public AudioClip audioSourceClip;
     public AudioSource audioSource;
     public GameObject shakeManager;
-    private Vector3 force = new Vector2(0, 0);
+    public Vector3 force = new Vector2(0, 0);
     public Vector3 mousePos;
     public Quaternion direction;
     public Camera mainCamera;
-    EggManager eggManager;
     GameObject directionTargetPrefab;
     GameObject directionTarget;
 
@@ -26,7 +25,7 @@ public class UserEggManager : EggManager, IBeginDragHandler,IDragHandler, IEndDr
     protected override void Start()
     {
         base.Start();
-        this.gameObject.layer = 10;
+        this.gameObject.layer = 11;
         shakeManager = GameObject.Find("Master");
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.volume = 0.3f;
@@ -34,7 +33,6 @@ public class UserEggManager : EggManager, IBeginDragHandler,IDragHandler, IEndDr
         directionTargetPrefab = Resources.Load(directioTargetPrefabPath) as GameObject;
         audioSource.clip = audioSourceClip;
         mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        eggManager = GetComponent<EggManager>();
     }
 
     protected override void FixedUpdate()
@@ -44,14 +42,15 @@ public class UserEggManager : EggManager, IBeginDragHandler,IDragHandler, IEndDr
         {
             mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         }
-        CalculateDirection(mousePos);
+        direction = CalculateDirection(mousePos);
     }
 
-    public void CalculateDirection(Vector3 pos)
+    public Quaternion CalculateDirection(Vector3 pos)
     {
         Vector2 len = pos - transform.position;
         float z = Mathf.Atan2(len.y, len.x) * Mathf.Rad2Deg;
         direction = Quaternion.Euler(0, 0, 180 + z);
+        return direction;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -67,19 +66,18 @@ public class UserEggManager : EggManager, IBeginDragHandler,IDragHandler, IEndDr
         directionTarget.transform.position = pos.normalized * (num+2) + transform.position;
         if (GameManager.isUserTurn)
         {
-            force = (transform.position - mousePos) * (num/3) ;
+            force = pos.normalized * num * 3;
         }
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    public virtual void OnEndDrag(PointerEventData eventData)
     {
         Destroy(directionTarget);
         if (GameManager.isUserTurn)
         {
-            eggManager.MoveEgg(force);
+            MoveEgg(force);
             GameManager.isUserTurn = !GameManager.isUserTurn;
         }
-
     }
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
