@@ -33,7 +33,7 @@ public class GoblinEgg : EnemyEggManager  // warrior는 eggmanager의 정보를 
         {
             DestroyEgg(this);
         }*/
-        if (otherObject.CompareTag("Player"))
+        if (otherObject.CompareTag("Player") && BattleReady.completeReady)
         {
             if (CompareTag("Enemy") && GameManager.isUserTurn)
             {

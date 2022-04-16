@@ -20,7 +20,7 @@ public class EnemyEggManager : EggManager
 
     }
 
-    protected override void DestroyEgg()
+    public override void DestroyEgg()
     {
         enemyEggManagers.Remove(this);
         base.DestroyEgg();

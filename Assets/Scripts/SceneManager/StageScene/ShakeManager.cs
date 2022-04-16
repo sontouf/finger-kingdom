@@ -8,11 +8,13 @@ public class ShakeManager : MonoBehaviour
     private Vector3 cameraPos;
     private Vector3 cameraOriginalPos;
 
-    public float shakeRange = 0.025f; 
-    public float duration = 0.025f;
+    public float shakeRange; 
+    public float duration;
 
     private void Start()
     {
+        shakeRange = 0.1f;
+        duration = 0.1f;
         cameraOriginalPos = mainCamera.transform.position;
     }
     public void Shake()

@@ -5,13 +5,17 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - Trap
   - Warrior
   - Archer
   - Shield
   - Cavalry
   - Healer
   - Boss
+  - DieTrigger
+  - Hurdle
+  - Trap
+  - Rope
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -25,11 +29,11 @@ TagManager:
   - Bullet
   - Enemy
   - Player
-  - 
-  - 
-  - 
-  - 
-  - 
+  - UserHurdle
+  - Ghost
+  - EnemyArrow
+  - EnemyHurdle
+  - Rope
   - 
   - 
   - 
@@ -48,4 +52,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: effectLayer
+    uniqueID: 2477090361
     locked: 0

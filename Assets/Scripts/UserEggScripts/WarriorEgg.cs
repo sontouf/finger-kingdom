@@ -13,11 +13,15 @@ public class WarriorEgg : UserEggManager  // warrior는 eggmanager의 정보를 
     // protected override를 추가해줘서 상속.
     protected override void Start()
     {
+        maxHp = 150;
         base.Start();
         image = Resources.Load<Sprite>(imagePath); // 스프라이트의 위치를 통해 받아온 스프라이트를 image에 저장해둔다.
         spriteRenderer.sprite = image; // 저장한 스프라이트를 실제 객체의 sprite로 전달.
-        damage = 15; // 데미지도 변경.
+        damage = 20;
         speed = 50;
+        heal = 0;
+        cost = 2;
+        rigidbody2D.mass = 1;
     }
 
     // protected rverride를 추가해줘서 상속.
@@ -31,11 +35,7 @@ public class WarriorEgg : UserEggManager  // warrior는 eggmanager의 정보를 
         base.OnCollisionEnter2D(other);
         GameObject otherObject = other.gameObject;
         EggManager otherEggManager = otherObject.GetComponent<EggManager>();
-/*        if (otherObject.CompareTag("Trap"))
-        {
-            DestroyEgg(this);
-        }*/
-        if (otherObject.CompareTag("Enemy"))
+        if ((otherObject.CompareTag("Enemy") || otherObject.CompareTag("Boss")) && BattleReady.completeReady)
         {
             if (CompareTag("Player") && !GameManager.isUserTurn && otherEggManager != null)
             {
@@ -46,5 +46,32 @@ public class WarriorEgg : UserEggManager  // warrior는 eggmanager의 정보를 
         }
     }
 
+
+
+    public int GetHp()
+    {
+        return maxHp;
+    }
+    public int GetDamage()
+    {
+        return damage;
+    }
+
+    public int GetSpeed()
+    {
+        return speed;
+    } 
+    public float GetMass()
+    {
+        return rigidbody2D.mass;
+    }
+    public int GetHeal()
+    {
+        return heal;
+    }
+    public int GetCost()
+    {
+        return cost;
+    }
 }
 

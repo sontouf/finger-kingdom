@@ -6,9 +6,47 @@ using UnityEngine.UI;
 public class lockManager : MonoBehaviour
 {
     private bool check;
+    //GameObject chapter4Clear;
+
 
     private void Update()
     {
+        //==========================chapter===============
+        if(DontDestroyUserData.storyNumber >= 4)
+        {
+            check = GameObject.Find("Chapter2lock");
+            if (check != false)
+            {
+                Destroy(GameObject.Find("Chapter2lock"));
+                GameObject.Find("Chapter2").GetComponent<Button>().interactable = true;
+    
+            }
+        }
+        if (DontDestroyUserData.storyNumber >= 8)
+        {
+            check = GameObject.Find("Chapter3lock");
+            if (check != false)
+            {
+                Destroy(GameObject.Find("Chapter3lock"));
+                GameObject.Find("Chapter3").GetComponent<Button>().interactable = true;
+ 
+            }
+        }
+        if (DontDestroyUserData.storyNumber >= 12)
+        {
+            check = GameObject.Find("Chapter4lock");
+            if (check != false)
+            {
+                Destroy(GameObject.Find("Chapter4lock"));
+                GameObject.Find("Chapter4").GetComponent<Button>().interactable = true;
+    
+            }
+        }
+
+
+
+        // ===================stage=======================
+
         if (DontDestroyUserData.storyNumber >= 1)
         {
             check = GameObject.Find("Chapter1Stage2lock");
@@ -16,6 +54,7 @@ public class lockManager : MonoBehaviour
             {
                 Destroy(GameObject.Find("Chapter1Stage2lock"));
                 GameObject.Find("Chapter1Stage2Button").GetComponent<Button>().interactable = true;
+
             }
         }
         if (DontDestroyUserData.storyNumber >= 2)
@@ -25,6 +64,7 @@ public class lockManager : MonoBehaviour
             {
                 Destroy(GameObject.Find("Chapter1Stage3lock"));
                 GameObject.Find("Chapter1Stage3Button").GetComponent<Button>().interactable = true;
+     
             }
         }
         if (DontDestroyUserData.storyNumber >= 3)
@@ -34,10 +74,12 @@ public class lockManager : MonoBehaviour
             {
                 Destroy(GameObject.Find("Chapter1Stage4lock"));
                 GameObject.Find("Chapter1Stage4Button").GetComponent<Button>().interactable = true;
+       
             }
         }
         if (DontDestroyUserData.storyNumber >= 4)
         {
+
             check = GameObject.Find("Chapter2Stage1lock");
             if (check != false)
             {
@@ -52,6 +94,7 @@ public class lockManager : MonoBehaviour
             {
                 Destroy(GameObject.Find("Chapter2Stage2lock"));
                 GameObject.Find("Chapter2Stage2Button").GetComponent<Button>().interactable = true;
+               
             }
         }
         if (DontDestroyUserData.storyNumber >= 6)
@@ -61,6 +104,7 @@ public class lockManager : MonoBehaviour
             {
                 Destroy(GameObject.Find("Chapter2Stage3lock"));
                 GameObject.Find("Chapter2Stage3Button").GetComponent<Button>().interactable = true;
+               
             }
         }
         if (DontDestroyUserData.storyNumber >= 7)
@@ -70,6 +114,7 @@ public class lockManager : MonoBehaviour
             {
                 Destroy(GameObject.Find("Chapter2Stage4lock"));
                 GameObject.Find("Chapter2Stage4Button").GetComponent<Button>().interactable = true;
+               
             }
         }
         if (DontDestroyUserData.storyNumber >= 8)
@@ -88,6 +133,7 @@ public class lockManager : MonoBehaviour
             {
                 Destroy(GameObject.Find("Chapter3Stage2lock"));
                 GameObject.Find("Chapter3Stage2Button").GetComponent<Button>().interactable = true;
+               
             }
         }
         if (DontDestroyUserData.storyNumber >= 10)
@@ -97,6 +143,7 @@ public class lockManager : MonoBehaviour
             {
                 Destroy(GameObject.Find("Chapter3Stage3lock"));
                 GameObject.Find("Chapter3Stage3Button").GetComponent<Button>().interactable = true;
+                
             }
         }
         if (DontDestroyUserData.storyNumber >= 11)
@@ -110,6 +157,7 @@ public class lockManager : MonoBehaviour
         }
         if (DontDestroyUserData.storyNumber >= 12)
         {
+
             check = GameObject.Find("Chapter4Stage1lock");
             if (check != false)
             {
@@ -117,15 +165,7 @@ public class lockManager : MonoBehaviour
                 GameObject.Find("Chapter4Stage1Button").GetComponent<Button>().interactable = true;
             }
         }
-        if (DontDestroyUserData.storyNumber >= 13)
-        {
-            check = GameObject.Find("Chapter4Stage2lock");
-            if (check != false)
-            {
-                Destroy(GameObject.Find("Chapter4Stage2lock"));
-                GameObject.Find("Chapter4Stage2Button").GetComponent<Button>().interactable = true;
-            }
-        }
     }
+
 
 }

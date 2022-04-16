@@ -10,14 +10,14 @@ public class Archer_arrow : MonoBehaviour
     const string arrowPrefabPath = "Prefabs/ArrowPrefab";
 
     static private GameObject arrowPrefab;
-    private float arrowDamage;
+    private int arrowDamage;
     public GameObject shakeManager;
     public AudioSource audioSource;
     private void Start()
     {
         shakeManager = GameObject.Find("Master");
-        Invoke("DestroyArrow", 3f);
-        arrowDamage = 20;
+        Invoke("DestroyArrow", 1.2f);
+        arrowDamage = 25;
         
         audioSource = gameObject.GetComponent<AudioSource>();
         audioSource.volume = 0.3f;
@@ -52,7 +52,7 @@ public class Archer_arrow : MonoBehaviour
                 {
                     DestroyEgg(this);
                 }*/
-        if (otherObject.CompareTag("Enemy"))
+        if (otherObject.CompareTag("Enemy") || otherObject.CompareTag("Boss"))
         {
             audioSource.Play();
             shakeManager.GetComponent<ShakeManager>().Shake();
@@ -65,5 +65,9 @@ public class Archer_arrow : MonoBehaviour
             }
 
         }
+    }
+    public int GetArrowDamage()
+    {
+        return arrowDamage;
     }
 }

@@ -14,14 +14,17 @@ public class ArcherEgg : UserEggManager, IEndDragHandler  // warrior는 eggmanag
     // protected override를 추가해줘서 상속.
     protected override void Start()
     {
+        maxHp = 70;
         base.Start();
         image = Resources.Load<Sprite>(imagePath); // 스프라이트의 위치를 통해 받아온 스프라이트를 image에 저장해둔다.
         spriteRenderer.sprite = image; // 저장한 스프라이트를 실제 객체의 sprite로 전달.
         rigidbody2D.mass = 1f;
-        speed = 20;
+        speed = 10;
         damage = 5; // 데미지도 변경.
-
-        arrowSpeed = 240;
+        arrowSpeed = 300;
+        heal = 0;
+        cost = 2;
+        gameObject.name = "Archer";
     }
 
     // protected override를 추가해줘서 상속.
@@ -39,7 +42,7 @@ public class ArcherEgg : UserEggManager, IEndDragHandler  // warrior는 eggmanag
                 {
                     DestroyEgg(this);
                 }*/
-        if (otherObject.CompareTag("Enemy"))
+        if ((otherObject.CompareTag("Enemy")|| otherObject.CompareTag("Boss")) && BattleReady.completeReady)
         {
             if (CompareTag("Player") && !GameManager.isUserTurn && otherEggManager != null)
             {
@@ -57,5 +60,30 @@ public class ArcherEgg : UserEggManager, IEndDragHandler  // warrior는 eggmanag
         arrow.GetComponent<Archer_arrow>().ShotArrow(arrowSpeed, force);
     }
 
+    public int GetHp()
+    {
+        return maxHp;
+    }
+    public int GetDamage()
+    {
+        return damage;
+    }
+
+    public int GetSpeed()
+    {
+        return speed;
+    }
+    public float GetMass()
+    {
+        return rigidbody2D.mass;
+    }
+    public int GetHeal()
+    {
+        return heal;
+    }
+    public int GetCost()
+    {
+        return cost;
+    }
 }
 
