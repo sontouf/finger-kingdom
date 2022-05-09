@@ -12,7 +12,8 @@ public class SelectStage : MonoBehaviour
         {
             DontDestroyUserData.storyNumber += 1;
             DontDestroyUserData.stageClearCheck = !DontDestroyUserData.stageClearCheck;
-            PlayerPrefs.SetInt("StoryNumber", DontDestroyUserData.storyNumber);
+            //DontDestroyUserData.storyNumber = PlayerPrefs.GetInt("StoryNumber");
+            //PlayerPrefs.SetInt("StoryNumber", DontDestroyUserData.storyNumber);
         }
     }
     public void ClickStage1()

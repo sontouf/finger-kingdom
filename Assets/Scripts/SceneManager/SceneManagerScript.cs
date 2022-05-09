@@ -15,14 +15,17 @@ public class SceneManagerScript : MonoBehaviour
     bool checkChapter2;
     bool checkChapter3;
     bool checkChapter4;
-    private void Awake()
+/*    private void Awake()
     {
         if (!PlayerPrefs.HasKey("StoryNumber"))
         {
+            //DontDestroyUserData.storyNumber = 0;
+            PlayerPrefs.SetInt("StoryNumber", 0);
             return;
         }
-        DontDestroyUserData.storyNumber = PlayerPrefs.GetInt("StoryNumber");
-    }
+        else
+            DontDestroyUserData.storyNumber = PlayerPrefs.GetInt("StoryNumber");
+    }*/
     private void Start()
     {
         checkChapter1 = false;

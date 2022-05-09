@@ -6,6 +6,10 @@ public class ExitButton : MonoBehaviour
 {
     public void ExitGame()
     {
+        if (PlayerPrefs.HasKey("StoryNumber"))
+        {
+            PlayerPrefs.DeleteKey("StoryNumber");
+        }
         Application.Quit();
     }
 }

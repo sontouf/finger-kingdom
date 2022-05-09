@@ -1,3 +1,4 @@
 *.zip filter=lfs diff=lfs merge=lfs -text
 resources.assets.resS filter=lfs diff=lfs merge=lfs -text
 fingerkingdom.zip filter=lfs diff=lfs merge=lfs -text
+fingerkingdom.aab filter=lfs diff=lfs merge=lfs -text

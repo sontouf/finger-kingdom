@@ -39,7 +39,7 @@ public class ScrollingBarController : MonoBehaviour
         }
         if (progressBar.fillAmount >= 0.99f && !oneClick)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0))
             {
                 op.allowSceneActivation = true;
                 oneClick = !oneClick;
